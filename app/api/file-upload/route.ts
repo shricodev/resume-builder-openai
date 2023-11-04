@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return NextResponse.redirect("/login");
+    return new NextResponse("Unauthorized", { status: 401 });
   }
   const sentData = await req.formData();
   const file: File = sentData.get("userImage") as unknown as File;

@@ -121,7 +121,7 @@ const AddCompanyModal = ({ onAddCompany }: CompaniesProps) => {
           }}
           className="bg-green-500 text-white rounded p-2 hover:bg-green-600 w-full"
         >
-          Show Modal
+          Show Company Modal
         </button>
       )}
     </>

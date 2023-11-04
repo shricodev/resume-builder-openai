@@ -2,18 +2,22 @@
 
 import React, { useState } from "react";
 
+import axios from "axios";
+import { useRouter } from "next/navigation";
+
 import Loading from "./Loading";
 import Companies from "./Companies";
 import AddCompanyModal from "./AddCompanyModal";
-import axios from "axios";
+import { useUserDataContext } from "./UserDataContext";
 
-type TUserDetails = {
+export type TUserDetails = {
   firstName: string;
   lastName: string;
   currentPosition: string;
   workingExperience: number;
   email: string;
   knownTechnologies: string;
+  latestUserImage: string | null;
   companies: TCompany[];
 };
 
@@ -25,24 +29,11 @@ export type TCompany = {
 };
 
 const Home = () => {
-  const [userDetails, setUserDetails] = useState<TUserDetails>({
-    firstName: "",
-    lastName: "",
-    currentPosition: "",
-    workingExperience: 0,
-    email: "",
-    knownTechnologies: "",
-    companies: [
-      {
-        companyName: "",
-        position: "",
-        workedYears: "",
-        technologies: "",
-      },
-    ],
-  });
+  const { userDetails, setUserDetails } = useUserDataContext();
   const [userImage, setUserImage] = useState<File | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const router = useRouter();
 
   const handleAddCompany = (newCompany: TCompany) => {
     if (userDetails) {
@@ -67,9 +58,20 @@ const Home = () => {
     if (userImage) {
       const payload = new FormData();
       payload.set("userImage", userImage);
-      const { data } = await axios.post("/api/file-upload", payload);
+      const {
+        data: { path },
+      }: { data: { path: string } } = await axios.post(
+        "/api/file-upload",
+        payload
+      );
+
+      setUserDetails((prevDetails) => ({
+        ...prevDetails,
+        latestUserImage: path,
+      }));
     }
     setLoading(false);
+    router.push("/resume");
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

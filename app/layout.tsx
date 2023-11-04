@@ -1,5 +1,6 @@
 import { GeistSans } from "geist/font";
 import "./globals.css";
+import UserDataContextProvider from "@/components/UserDataContext";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -20,7 +21,7 @@ export default function RootLayout({
     <html lang="en" className={GeistSans.className}>
       <body className="bg-background text-foreground">
         <main className="min-h-screen flex flex-col items-center">
-          {children}
+          <UserDataContextProvider>{children}</UserDataContextProvider>
         </main>
       </body>
     </html>
