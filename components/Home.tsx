@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import Loading from "./Loading";
 import Companies from "./Companies";
 import AddCompanyModal from "./AddCompanyModal";
+import axios from "axios";
 
 type TUserDetails = {
   firstName: string;
@@ -59,10 +60,16 @@ const Home = () => {
     }));
   };
 
-  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
-    console.log(userDetails, userImage);
+
+    if (userImage) {
+      const payload = new FormData();
+      payload.set("userImage", userImage);
+      const { data } = await axios.post("/api/file-upload", payload);
+    }
+    setLoading(false);
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
