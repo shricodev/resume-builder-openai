@@ -108,7 +108,7 @@ const AddCompanyModal = ({ onAddCompany }: CompaniesProps) => {
               onClick={() => {
                 setIsHidden((prev) => !prev);
               }}
-              className="bg-red-500 text-white rounded p-2 hover:bg-red-600"
+              className="bg-gray-500 text-white rounded p-2 hover:bg-gray-600"
             >
               Hide Modal
             </button>
@@ -119,7 +119,7 @@ const AddCompanyModal = ({ onAddCompany }: CompaniesProps) => {
           onClick={() => {
             setIsHidden((prev) => !prev);
           }}
-          className="bg-green-500 text-white rounded p-2 hover:bg-green-600 w-full"
+          className="bg-slate-600 text-white rounded p-2 hover:bg-slate-700 w-full"
         >
           Show Company Modal
         </button>

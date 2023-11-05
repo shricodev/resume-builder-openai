@@ -16,12 +16,16 @@ export async function POST(req: NextRequest) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
   const sentData = await req.formData();
-  const file: File = sentData.get("userImage") as unknown as File;
+  const file: File = sentData.get("file") as unknown as File;
 
-  if (!["image/png", "image/jpeg", "image/jpg"].includes(file.type)) {
+  if (
+    !["image/png", "image/jpeg", "image/jpg", "application/pdf"].includes(
+      file.type
+    )
+  ) {
     return NextResponse.json(
       {
-        error: "Only png/jpg/jpeg files are allowed",
+        error: "Only png/jpg/jpeg/pdf files are allowed",
       },
       { status: 400 }
     );

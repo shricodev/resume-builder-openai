@@ -9,6 +9,7 @@ import Loading from "./Loading";
 import Companies from "./Companies";
 import AddCompanyModal from "./AddCompanyModal";
 import { useUserDataContext } from "./UserDataContext";
+import { generateResumeText } from "@/utils/openai";
 
 export type TUserDetails = {
   firstName: string;
@@ -21,6 +22,7 @@ export type TUserDetails = {
   openaiProfileSummary: string | null;
   openaiWorkHistory: string | null;
   openaiJobResponsibilities: string | null;
+  pdfUrl: string | null;
   companies: TCompany[];
 };
 
@@ -53,21 +55,12 @@ const Home = () => {
 
     workHistory: `I am writing a resume, my details are \n name: ${fullName} \n role: ${
       userDetails.currentPosition
-    } (${userDetails.workingExperience} years). ${
-      userDetails.companies.length > 1 ?? companyDetails()
-    } \n Can you write me 50 words for each company seperated in numbers of my succession in the company (in first person)?`,
+    } (${
+      userDetails.workingExperience
+    } years). ${companyDetails()} \n Can you write me 50 words for each company seperated in numbers of my succession in the company (in first person)?`,
   };
 
   const router = useRouter();
-
-  // const generateResumeText = async (prompt: string) => {
-  //   const event = await generateOpenAI(prompt);
-  //   const { data, isError } = useEventRunDetails(event.id);
-  //   return {
-  //     data,
-  //     isError,
-  //   };
-  // };
 
   const handleAddCompany = (newCompany: TCompany) => {
     if (userDetails) {
@@ -90,7 +83,7 @@ const Home = () => {
     setLoading(true);
     if (userImage) {
       const payload = new FormData();
-      payload.set("userImage", userImage);
+      payload.set("file", userImage);
       const {
         data: { path },
       }: { data: { path: string } } = await axios.post(
@@ -104,7 +97,19 @@ const Home = () => {
       }));
     }
     // ! TODO: Add trigger call here.
-    // await generateOpenAI(prompts.workHistory);
+    const [aiProfileSummary, aiWorkHistory, aiJobResponsibilities] =
+      await Promise.all([
+        generateResumeText(prompts.profileSummary),
+        generateResumeText(prompts.jobResponsibilities),
+        generateResumeText(prompts.workHistory),
+      ]);
+
+    setUserDetails((prevDetails) => ({
+      ...prevDetails,
+      openaiProfileSummary: aiProfileSummary,
+      openaiWorkHistory: aiWorkHistory,
+      openaiJobResponsibilities: aiJobResponsibilities,
+    }));
 
     setLoading(false);
     router.push("/resume");
@@ -147,7 +152,7 @@ const Home = () => {
               placeholder="e.g. John"
               value={userDetails.firstName}
               onChange={handleInputChange}
-              className="p-3 rounded-md outline-none border border-gray-200 text-white bg-transparent"
+              className="p-3 rounded-md outline-none border border-gray-500 text-white bg-transparent"
             />
           </div>
           <div className="flex flex-col w-full">
@@ -160,7 +165,7 @@ const Home = () => {
               placeholder="e.g. Doe"
               value={userDetails.lastName}
               onChange={handleInputChange}
-              className="p-3 rounded-md outline-none border border-gray-200 text-white bg-transparent"
+              className="p-3 rounded-md outline-none border border-gray-500 text-white bg-transparent"
             />
           </div>
         </div>
@@ -176,7 +181,7 @@ const Home = () => {
               placeholder="e.g. Software Engineer"
               value={userDetails.currentPosition}
               onChange={handleInputChange}
-              className="p-3 rounded-md outline-none border border-gray-200 text-white bg-transparent"
+              className="p-3 rounded-md outline-none border border-gray-500 text-white bg-transparent"
             />
           </div>
           <div className="flex flex-col">
@@ -191,7 +196,7 @@ const Home = () => {
               id="workingExperience"
               value={userDetails.workingExperience}
               onChange={handleInputChange}
-              className="p-3 rounded-md outline-none border border-gray-200 text-white bg-transparent"
+              className="p-3 rounded-md outline-none border border-gray-500 text-white bg-transparent"
             />
           </div>
           <div className="flex flex-col">
@@ -204,7 +209,7 @@ const Home = () => {
               placeholder="e.g. React, Node, TypeScript"
               value={userDetails.knownTechnologies}
               onChange={handleInputChange}
-              className="p-3 rounded-md outline-none border border-gray-200 text-white bg-transparent"
+              className="p-3 rounded-md outline-none border border-gray-500 text-white bg-transparent"
             />
           </div>
         </div>
@@ -218,7 +223,7 @@ const Home = () => {
           placeholder="e.g. john.doe@gmail.com"
           value={userDetails.email}
           onChange={handleInputChange}
-          className="p-3 rounded-md outline-none border border-gray-200 text-white bg-transparent"
+          className="p-3 rounded-md outline-none border border-gray-500 text-white bg-transparent"
         />
         <hr className="w-full h-1 mt-3" />
         <label htmlFor="photo">Upload your image 😎</label>
@@ -228,7 +233,7 @@ const Home = () => {
           id="photo"
           accept="image/x-png,image/jpeg"
           onChange={(e) => e.target.files && setUserImage(e.target.files[0])}
-          className="p-3 rounded-md outline-none border border-gray-200 mb-3"
+          className="p-3 rounded-md outline-none border border-gray-500 mb-3"
         />
         <AddCompanyModal onAddCompany={handleAddCompany} />
         <Companies

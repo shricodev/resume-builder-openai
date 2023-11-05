@@ -6,7 +6,7 @@ import Resume from "@/components/Resume";
 import { useUserDataContext } from "@/components/UserDataContext";
 
 const Page = () => {
-  const { userDetails } = useUserDataContext();
+  const { userDetails, setUserDetails } = useUserDataContext();
 
   const keysToCheck = Object.keys(userDetails).filter(
     (key) => key !== "latestUserImage"
@@ -19,7 +19,7 @@ const Page = () => {
     }
   }
 
-  return <Resume userDetails={userDetails} />;
+  return <Resume userDetails={userDetails} setUserDetails={setUserDetails} />;
 };
 
 export default Page;
