@@ -5,6 +5,7 @@ import axios from "axios";
 import html2canvas from "html2canvas";
 
 import { TUserDetails } from "./Home";
+import { sendEmail } from "@/app/_actions";
 
 type ResumeProps = {
   userDetails: TUserDetails;
@@ -62,7 +63,12 @@ const Resume = ({ userDetails, setUserDetails }: ResumeProps) => {
       pdfUrl,
     }));
 
-    console.log(userDetails);
+    await sendEmail({
+      to: userDetails.email,
+      text: pdfUrl,
+      name: userFullName,
+      from: "onboarding@resend.dev",
+    });
   };
 
   const replaceWithBr = (sentence: string) => {

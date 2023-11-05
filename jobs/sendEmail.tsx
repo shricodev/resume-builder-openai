@@ -1,4 +1,3 @@
-import { z } from "zod";
 import { Html } from "@react-email/html";
 import { Head } from "@react-email/head";
 import { Text } from "@react-email/text";
@@ -8,6 +7,7 @@ import { Section } from "@react-email/section";
 import { Preview } from "@react-email/preview";
 import { eventTrigger } from "@trigger.dev/sdk";
 import { Container } from "@react-email/container";
+import { z } from "zod";
 
 import { client } from "@/trigger";
 
@@ -35,48 +35,11 @@ const text = {
   fontSize: "16px",
 };
 
-const resend = new Resend({
-  // This ID should match your Resend integration ID on the 'Your connected integrations' dashboard.
-  id: "resend",
-  apiKey: process.env.RESEND_API_KEY!,
-});
-
-// This job sends a basic email built using React and Typescript
-client.defineJob({
-  id: "resend-email-form",
-  name: "Resend: send email on form submit",
-  version: "1.0.0",
-  enabled: false,
-  trigger: eventTrigger({
-    name: "send.email",
-    schema: z.object({
-      to: z.string(),
-      subject: z.string(),
-      text: z.string(),
-      name: z.string(),
-      // The 'from' email address must be a verified domain in your Resend account.
-      from: z.string(),
-    }),
-  }),
-  integrations: {
-    resend,
-  },
-  run: async (payload, io, ctx) => {
-    await io.resend.sendEmail("send-email", {
-      to: payload.to,
-      subject: payload.subject,
-      text: payload.text,
-      from: payload.from,
-      react: <Email name={payload.name} text={payload.text} />,
-    });
-  },
-});
-
 function Email({ name, text }: { name: string; text: string }) {
   return (
     <Html>
       <Head />
-      <Preview>Your Resume is ready🎉🎉</Preview>
+      <Preview>Your resume is ready. 🎉🎉🔥</Preview>
       <Body style={body}>
         <Container style={container}>
           <Section style={section}>
@@ -90,3 +53,36 @@ function Email({ name, text }: { name: string; text: string }) {
     </Html>
   );
 }
+
+const resend = new Resend({
+  id: "resend",
+  apiKey: process.env.RESEND_API_KEY!,
+});
+
+client.defineJob({
+  id: "send-resend-email",
+  name: "Send Resend Email",
+  version: "0.1.0",
+  trigger: eventTrigger({
+    name: "send.email",
+    schema: z.object({
+      to: z.string(),
+      text: z.string(),
+      name: z.string(),
+      from: z.string().optional(),
+    }),
+  }),
+  integrations: {
+    resend,
+  },
+  run: async (payload, io, ctx) => {
+    io.logger.info("Sending email");
+    await io.resend.sendEmail("send-my-email", {
+      from: payload.from ?? "onboarding@resend.dev",
+      to: payload.to ? payload.to : "hancypiyush@gmail.com",
+      subject: "Your AI Generated Resume is here 🎉🎉",
+      text: payload.text,
+      react: <Email name={payload.name} text={payload.text} />,
+    });
+  },
+});
