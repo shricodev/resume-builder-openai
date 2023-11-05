@@ -26,7 +26,7 @@ const Resume = ({ userDetails }: ResumeProps) => {
         onClick={handleEmailSubmit}
         className="p-4 pointer outline-none bg-blue-500 border-none text-zinc-100 text-base font-semibold rounded-md mt-2"
       >
-        Send Email
+        Send Resume in Email
       </button>
       <div className="min-h-screen p-8" ref={componentRef}>
         <header className="w-[80%] my-0 mx-auto min-h-[10vh] bg-slate-600 p-8 rounded-r-sm flex items-center justify-between">
@@ -52,6 +52,7 @@ const Resume = ({ userDetails }: ResumeProps) => {
         <div className="w-[80%] my-0 mx-auto p-8 min-h-[80vh] border-2 border-white-400">
           <div>
             <h2 className="mb-2 font-bold text-lg">PROFILE SUMMARY</h2>
+            {/* TODO: the text needs to be changed to OpenAI response */}
             <p
               dangerouslySetInnerHTML={{
                 __html: replaceWithBr(
@@ -80,6 +81,7 @@ const Resume = ({ userDetails }: ResumeProps) => {
           <hr className="my-8 h-2" />
           <div>
             <h2 className="mb-2 font-bold text-lg">JOB PROFILE</h2>
+            {/* TODO: the text needs to be changed to OpenAI response */}
             <p
               dangerouslySetInnerHTML={{
                 __html: replaceWithBr(
@@ -92,6 +94,7 @@ const Resume = ({ userDetails }: ResumeProps) => {
           <hr className="my-8 h-2" />
           <div>
             <h2 className="mb-2 font-bold text-lg">JOB RESPONSIBILITIES</h2>
+            {/* TODO: the text needs to be changed to OpenAI response */}
             <p
               dangerouslySetInnerHTML={{
                 __html: replaceWithBr(

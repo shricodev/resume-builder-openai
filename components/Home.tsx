@@ -18,6 +18,9 @@ export type TUserDetails = {
   email: string;
   knownTechnologies: string;
   latestUserImage: string | null;
+  openaiProfileSummary: string | null;
+  openaiWorkHistory: string | null;
+  openaiJobResponsibilities: string | null;
   companies: TCompany[];
 };
 
@@ -33,7 +36,38 @@ const Home = () => {
   const [userImage, setUserImage] = useState<File | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
+  const fullName = userDetails.firstName + " " + userDetails.lastName;
+
+  const companyDetails = () => {
+    let stringText = "";
+    for (let i = 1; i < userDetails.companies.length; i++) {
+      stringText += ` ${userDetails.companies[i].companyName} as a ${userDetails.companies[i].position} on technologies ${userDetails.companies[i].technologies} for ${userDetails.companies[i].workedYears} years.`;
+    }
+    return stringText;
+  };
+
+  const prompts = {
+    profileSummary: `I am writing a resume, my details are \n name: ${fullName} \n role: ${userDetails.currentPosition} (${userDetails.workingExperience} years). \n I write in the technolegies: ${userDetails.knownTechnologies}. Can you write a 100 words description for the top of the resume(first person writing)?`,
+
+    jobResponsibilities: `I am writing a resume, my details are \n name: ${fullName} \n role: ${userDetails.currentPosition} (${userDetails.workingExperience} years). \n I write in the technolegies: ${userDetails.knownTechnologies}. Can you write 3 points for a resume on what I am good at?`,
+
+    workHistory: `I am writing a resume, my details are \n name: ${fullName} \n role: ${
+      userDetails.currentPosition
+    } (${userDetails.workingExperience} years). ${
+      userDetails.companies.length > 1 ?? companyDetails()
+    } \n Can you write me 50 words for each company seperated in numbers of my succession in the company (in first person)?`,
+  };
+
   const router = useRouter();
+
+  // const generateResumeText = async (prompt: string) => {
+  //   const event = await generateOpenAI(prompt);
+  //   const { data, isError } = useEventRunDetails(event.id);
+  //   return {
+  //     data,
+  //     isError,
+  //   };
+  // };
 
   const handleAddCompany = (newCompany: TCompany) => {
     if (userDetails) {
@@ -54,7 +88,6 @@ const Home = () => {
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
-
     if (userImage) {
       const payload = new FormData();
       payload.set("userImage", userImage);
@@ -70,6 +103,9 @@ const Home = () => {
         latestUserImage: path,
       }));
     }
+    // ! TODO: Add trigger call here.
+    // await generateOpenAI(prompts.workHistory);
+
     setLoading(false);
     router.push("/resume");
   };
@@ -82,7 +118,6 @@ const Home = () => {
     }));
   };
 
-  //👇🏻 Renders the Loading component when you sumit the form.
   if (loading) {
     return <Loading />;
   }

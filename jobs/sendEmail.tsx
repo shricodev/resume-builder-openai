@@ -35,25 +35,6 @@ const text = {
   fontSize: "16px",
 };
 
-function Email({ name, text }: { name: string; text: string }) {
-  return (
-    <Html>
-      <Head />
-      <Preview>Your Resume is ready🎉🎉</Preview>
-      <Body style={body}>
-        <Container style={container}>
-          <Section style={section}>
-            <Text>
-              Hey {name}! click the below link to have access to your resume 🚀
-            </Text>
-            <Text>{text}</Text>
-          </Section>
-        </Container>
-      </Body>
-    </Html>
-  );
-}
-
 const resend = new Resend({
   // This ID should match your Resend integration ID on the 'Your connected integrations' dashboard.
   id: "resend",
@@ -65,6 +46,7 @@ client.defineJob({
   id: "resend-email-form",
   name: "Resend: send email on form submit",
   version: "1.0.0",
+  enabled: false,
   trigger: eventTrigger({
     name: "send.email",
     schema: z.object({
@@ -89,3 +71,22 @@ client.defineJob({
     });
   },
 });
+
+function Email({ name, text }: { name: string; text: string }) {
+  return (
+    <Html>
+      <Head />
+      <Preview>Your Resume is ready🎉🎉</Preview>
+      <Body style={body}>
+        <Container style={container}>
+          <Section style={section}>
+            <Text>
+              Hey {name}! click the below link to have access to your resume 🚀
+            </Text>
+            <Text>{text}</Text>
+          </Section>
+        </Container>
+      </Body>
+    </Html>
+  );
+}

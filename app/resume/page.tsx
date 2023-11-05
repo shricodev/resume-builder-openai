@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import Resume from "@/components/Resume";
 import { useUserDataContext } from "@/components/UserDataContext";
 
-const page = () => {
+const Page = () => {
   const { userDetails } = useUserDataContext();
 
   const keysToCheck = Object.keys(userDetails).filter(
@@ -22,4 +22,4 @@ const page = () => {
   return <Resume userDetails={userDetails} />;
 };
 
-export default page;
+export default Page;

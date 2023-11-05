@@ -23,6 +23,9 @@ export default function UserDataContextProvider({
     email: "",
     knownTechnologies: "",
     latestUserImage: null,
+    openaiProfileSummary: null,
+    openaiWorkHistory: null,
+    openaiJobResponsibilities: null,
     companies: [
       {
         companyName: "",
