@@ -96,7 +96,6 @@ const Home = () => {
         latestUserImage: path,
       }));
     }
-    // ! TODO: Add trigger call here.
     const [aiProfileSummary, aiWorkHistory, aiJobResponsibilities] =
       await Promise.all([
         generateResumeText(prompts.profileSummary),

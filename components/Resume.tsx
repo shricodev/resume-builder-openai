@@ -4,8 +4,9 @@ import jsPDF from "jspdf";
 import axios from "axios";
 import html2canvas from "html2canvas";
 
-import { TUserDetails } from "./Home";
 import { sendEmail } from "@/app/_actions";
+
+import { TUserDetails } from "./Home";
 
 type ResumeProps = {
   userDetails: TUserDetails;

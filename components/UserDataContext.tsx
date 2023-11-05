@@ -25,6 +25,7 @@ export default function UserDataContextProvider({
     latestUserImage: null,
     openaiProfileSummary: null,
     openaiWorkHistory: null,
+    pdfUrl: null,
     openaiJobResponsibilities: null,
     companies: [
       {

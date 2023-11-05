@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { Html } from "@react-email/html";
 import { Head } from "@react-email/head";
 import { Text } from "@react-email/text";
@@ -7,7 +8,6 @@ import { Section } from "@react-email/section";
 import { Preview } from "@react-email/preview";
 import { eventTrigger } from "@trigger.dev/sdk";
 import { Container } from "@react-email/container";
-import { z } from "zod";
 
 import { client } from "@/trigger";
 
@@ -79,7 +79,7 @@ client.defineJob({
     io.logger.info("Sending email");
     await io.resend.sendEmail("send-my-email", {
       from: payload.from ?? "onboarding@resend.dev",
-      to: payload.to ? payload.to : "hancypiyush@gmail.com",
+      to: payload.to,
       subject: "Your AI Generated Resume is here 🎉🎉",
       text: payload.text,
       react: <Email name={payload.name} text={payload.text} />,
