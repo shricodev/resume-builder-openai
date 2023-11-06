@@ -4,7 +4,6 @@ import AuthButton from "../components/AuthButton";
 
 import { createClient } from "@/utils/supabase/server";
 
-import ConnectSupabaseSteps from "@/components/ConnectSupabaseSteps";
 import Home from "@/components/Home";
 
 export default async function Index() {
@@ -20,13 +19,20 @@ export default async function Index() {
       <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
         <div className="w-full max-w-6xl flex justify-between items-center p-3 text-sm">
           <span className="font-bold select-none">resumeGPT.</span>
+          {/* 👇🏻 This is a pre given component from supabase that allows user to authenticate */}
           <AuthButton />
         </div>
       </nav>
 
       <div className="animate-in flex-1 flex flex-col gap-20 opacity-0 max-w-6xl px-3">
         <main className="flex-1 flex flex-col gap-6">
-          {user ? <Home /> : <ConnectSupabaseSteps />}
+          {user ? (
+            <Home />
+          ) : (
+            <h1 className="font-bold text-xl text-white">
+              You are not logged in. Please authenticate...
+            </h1>
+          )}
         </main>
       </div>
 

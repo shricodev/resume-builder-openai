@@ -2,10 +2,7 @@ import React from "react";
 
 import { TCompany } from "./Home";
 
-type CompaniesProps = {
-  companies: TCompany[];
-  onRemoveCompany: (index: number) => void;
-};
+type CompaniesProps = {...};
 
 const Companies = ({ companies, onRemoveCompany }: CompaniesProps) => {
   return (
@@ -33,33 +30,7 @@ const Companies = ({ companies, onRemoveCompany }: CompaniesProps) => {
                 className="p-2 border border-gray-300 rounded-md w-full bg-transparent"
               />
             </div>
-
-            <div className="mb-2">
-              <label htmlFor={`position-${index}`} className="text-white">
-                Position
-              </label>
-              <input
-                type="text"
-                id={`position-${index}`}
-                name="position"
-                defaultValue={company.position}
-                className="p-2 border border-gray-300 rounded-md w-full bg-transparent"
-              />
-            </div>
-
-            <div className="mb-2">
-              <label htmlFor={`workedYears-${index}`} className="text-white">
-                Worked Years
-              </label>
-              <input
-                type="text"
-                name="workedYears"
-                id={`workedYears-${index}`}
-                defaultValue={company.workedYears}
-                className="p-2 border border-gray-300 rounded-md w-full bg-transparent"
-              />
-            </div>
-
+            // ...Remaining input fields.
             <button
               onClick={() => onRemoveCompany(index)}
               className="bg-red-500 text-white rounded p-2 hover:bg-red-600"

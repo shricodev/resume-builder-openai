@@ -2,17 +2,9 @@
 
 1. You'll first need a Supabase project which can be made [via the Supabase dashboard](https://database.new)
 
-2. Create a Next.js app using the Supabase Starter template npx command
-
-   ```bash
-   npx create-next-app -e with-supabase
-   ```
+2. Clone the repository.
 
 3. Use `cd` to change into the app's directory
-
-   ```bash
-   cd resume-builder-gpt4
-   ```
 
 4. Rename `.env.local.example` to `.env.local` and update all the `.env` variables:
 
