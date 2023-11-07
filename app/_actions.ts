@@ -20,3 +20,12 @@ export async function sendEmail({ to, text, name, from }: SendEmailProps) {
     },
   });
 }
+
+export async function getResumeText(prompt: string) {
+  return await client.sendEvent({
+    name: "openai.tasks",
+    payload: {
+      prompt,
+    },
+  });
+}

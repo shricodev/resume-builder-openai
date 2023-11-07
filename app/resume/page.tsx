@@ -9,7 +9,7 @@ const Page = () => {
   const { userDetails, setUserDetails } = useUserDataContext();
 
   const keysToCheck = Object.keys(userDetails).filter(
-    (key) => key !== "latestUserImage"
+    (key) => key !== "latestUserImage" && key !== "pdfUrl"
   );
 
   for (let key of keysToCheck) {
