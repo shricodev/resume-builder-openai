@@ -9,7 +9,6 @@ import Loading from "./Loading";
 import Companies from "./Companies";
 import AddCompanyModal from "./AddCompanyModal";
 import { useUserDataContext } from "./UserDataContext";
-import { generateResumeText } from "@/utils/openai";
 import { getResumeText } from "@/app/_actions";
 
 export type TUserDetails = {
@@ -20,9 +19,6 @@ export type TUserDetails = {
   email: string;
   knownTechnologies: string;
   latestUserImage: string | null;
-  openaiProfileSummary: string | null;
-  openaiWorkHistory: string | null;
-  openaiJobResponsibilities: string | null;
   pdfUrl: string | null;
   companies: TCompany[];
 };
@@ -35,16 +31,16 @@ export type TCompany = {
 };
 
 const Home = () => {
-  const { userDetails, setUserDetails } = useUserDataContext();
+  const { userDetails, setUserDetails, setUserEvent } = useUserDataContext();
   const [userImage, setUserImage] = useState<File | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [uploading, setUploading] = useState<boolean>(false);
 
   const fullName = userDetails.firstName + " " + userDetails.lastName;
 
   const companyDetails = () => {
     let stringText = "";
     for (let i = 1; i < userDetails.companies.length; i++) {
-      stringText += ` ${userDetails.companies[i].companyName} as a ${userDetails.companies[i].position} on technologies ${userDetails.companies[i].technologies} for ${userDetails.companies[i].workedYears} years.`;
+      stringText += ` ${userDetails.companies[i].companyName} as a ${userDetails.companies[i].position} on ${userDetails.companies[i].technologies} for ${userDetails.companies[i].workedYears} years.`;
     }
     return stringText;
   };
@@ -81,7 +77,7 @@ const Home = () => {
 
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setLoading(true);
+    setUploading(true);
     if (userImage) {
       const payload = new FormData();
       payload.set("file", userImage);
@@ -97,25 +93,21 @@ const Home = () => {
         latestUserImage: path,
       }));
     }
-    // const [aiProfileSummary, aiWorkHistory, aiJobResponsibilities] =
-    //   await Promise.all([
-    //     generateResumeText(prompts.profileSummary),
-    //     generateResumeText(prompts.jobResponsibilities),
-    //     generateResumeText(prompts.workHistory),
-    //   ]);
+    const [aiProfileSummary, aiWorkHistory, aiJobResponsibilities] =
+      await Promise.all([
+        getResumeText(prompts.profileSummary),
+        getResumeText(prompts.jobResponsibilities),
+        getResumeText(prompts.workHistory),
+      ]);
 
-    const aiPrSummary = await getResumeText(prompts.profileSummary);
-    console.log(aiPrSummary);
+    setUserEvent({
+      jobResponsibilitiesEventId: aiJobResponsibilities.id,
+      profileSummaryEventId: aiProfileSummary.id,
+      workHistoryEventId: aiWorkHistory.id,
+    });
 
-    // setUserDetails((prevDetails) => ({
-    //   ...prevDetails,
-    //   openaiProfileSummary: aiProfileSummary,
-    //   openaiWorkHistory: aiWorkHistory,
-    //   openaiJobResponsibilities: aiJobResponsibilities,
-    // }));
-
-    setLoading(false);
-    // router.push("/resume");
+    setUploading(false);
+    router.push("/resume");
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -126,8 +118,8 @@ const Home = () => {
     }));
   };
 
-  if (loading) {
-    return <Loading />;
+  if (uploading) {
+    return <Loading loadText="Uploading your file..." />;
   }
 
   return (

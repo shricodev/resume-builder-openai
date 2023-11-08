@@ -69,7 +69,7 @@ client.defineJob({
       to: z.string(),
       text: z.string(),
       name: z.string(),
-      from: z.string().optional(),
+      from: z.string(),
     }),
   }),
   integrations: {
@@ -78,7 +78,7 @@ client.defineJob({
   run: async (payload, io, ctx) => {
     io.logger.info("Sending email");
     await io.resend.sendEmail("send-my-email", {
-      from: payload.from ?? "onboarding@resend.dev",
+      from: payload.from,
       to: payload.to,
       subject: "Your AI Generated Resume is here 🎉🎉",
       text: payload.text,

@@ -22,7 +22,7 @@ const AddCompanyModal = ({ onAddCompany }: CompaniesProps) => {
         <div className="mb-4">
           <div className="mb-4 p-4 border bg-gray-800 rounded-lg shadow-md">
             <div className="mb-2">
-              <label htmlFor={`companyName`} className="text-white">
+              <label htmlFor="companyName" className="text-white">
                 Company Name
               </label>
               <input
@@ -30,7 +30,7 @@ const AddCompanyModal = ({ onAddCompany }: CompaniesProps) => {
                 required
                 name="companies"
                 placeholder="e.g. Google"
-                id={`companyName`}
+                id="companyName"
                 value={toAddCompany.companyName}
                 onChange={(event) =>
                   setToAddCompany((prev) => ({
@@ -43,13 +43,13 @@ const AddCompanyModal = ({ onAddCompany }: CompaniesProps) => {
             </div>
 
             <div className="mb-2">
-              <label htmlFor={`position`} className="text-white">
+              <label htmlFor="position" className="text-white">
                 Position
               </label>
               <input
                 type="text"
                 required
-                id={`position`}
+                id="position"
                 placeholder="e.g. Software Engineer"
                 name="position"
                 value={toAddCompany.position}
@@ -64,7 +64,7 @@ const AddCompanyModal = ({ onAddCompany }: CompaniesProps) => {
             </div>
 
             <div className="mb-2">
-              <label htmlFor={`workedYears`} className="text-white">
+              <label htmlFor="workedYears" className="text-white">
                 Worked Years
               </label>
               <input
@@ -72,12 +72,33 @@ const AddCompanyModal = ({ onAddCompany }: CompaniesProps) => {
                 required
                 name="workedYears"
                 placeholder="e.g. 2"
-                id={`workedYears`}
+                id="workedYears"
                 value={toAddCompany.workedYears}
                 onChange={(event) =>
                   setToAddCompany((prev) => ({
                     ...prev,
                     workedYears: event.target.value,
+                  }))
+                }
+                className="p-2 border border-gray-300 rounded-md w-full bg-transparent"
+              />
+            </div>
+
+            <div className="mb-2">
+              <label htmlFor="Technologies" className="text-white">
+                Technologies
+              </label>
+              <input
+                type="text"
+                required
+                name="technologies"
+                placeholder="e.g. React, Node.js"
+                id="technologies"
+                value={toAddCompany.workedYears}
+                onChange={(event) =>
+                  setToAddCompany((prev) => ({
+                    ...prev,
+                    technologies: event.target.value,
                   }))
                 }
                 className="p-2 border border-gray-300 rounded-md w-full bg-transparent"

@@ -1,1 +1,2 @@
-export * from "./sendemail";
+export * from "./sendEmail";
+export * from "./generateResumeText";

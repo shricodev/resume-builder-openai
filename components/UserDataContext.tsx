@@ -8,6 +8,14 @@ const UserDataContext = createContext<TUserDataContext | null>(null);
 type TUserDataContext = {
   userDetails: TUserDetails;
   setUserDetails: React.Dispatch<React.SetStateAction<TUserDetails>>;
+  userEvent: EventType;
+  setUserEvent: React.Dispatch<React.SetStateAction<EventType>>;
+};
+
+export type EventType = {
+  profileSummaryEventId: string;
+  jobResponsibilitiesEventId: string;
+  workHistoryEventId: string;
 };
 
 export default function UserDataContextProvider({
@@ -23,10 +31,7 @@ export default function UserDataContextProvider({
     email: "",
     knownTechnologies: "",
     latestUserImage: null,
-    openaiProfileSummary: null,
-    openaiWorkHistory: null,
     pdfUrl: null,
-    openaiJobResponsibilities: null,
     companies: [
       {
         companyName: "",
@@ -36,11 +41,19 @@ export default function UserDataContextProvider({
       },
     ],
   });
+  const [userEvent, setUserEvent] = useState<EventType>({
+    profileSummaryEventId: "",
+    jobResponsibilitiesEventId: "",
+    workHistoryEventId: "",
+  });
+
   return (
     <UserDataContext.Provider
       value={{
         userDetails,
         setUserDetails,
+        userEvent,
+        setUserEvent,
       }}
     >
       {children}

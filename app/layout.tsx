@@ -1,5 +1,8 @@
 import { GeistSans } from "geist/font";
+import { TriggerProvider } from "@trigger.dev/react";
+
 import "./globals.css";
+
 import UserDataContextProvider from "@/components/UserDataContext";
 
 const defaultUrl = process.env.VERCEL_URL
@@ -21,7 +24,17 @@ export default function RootLayout({
     <html lang="en" className={GeistSans.className}>
       <body className="bg-background text-foreground">
         <main className="min-h-screen flex flex-col items-center">
-          <UserDataContextProvider>{children}</UserDataContextProvider>
+          <UserDataContextProvider>
+            {" "}
+            <TriggerProvider
+              publicApiKey={
+                process.env.NEXT_PUBLIC_TRIGGER_PUBLIC_API_KEY ?? ""
+              }
+              apiUrl={process.env.NEXT_PUBLIC_TRIGGER_API_URL}
+            >
+              {children}
+            </TriggerProvider>
+          </UserDataContextProvider>
         </main>
       </body>
     </html>
