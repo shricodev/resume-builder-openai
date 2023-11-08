@@ -60,6 +60,19 @@ const Companies = ({ companies, onRemoveCompany }: CompaniesProps) => {
               />
             </div>
 
+            <div className="mb-2">
+              <label htmlFor={`technologies-${index}`} className="text-white">
+                Technologies
+              </label>
+              <input
+                type="text"
+                name="technologies"
+                id={`technologies-${index}`}
+                defaultValue={company.technologies}
+                className="p-2 border border-gray-300 rounded-md w-full bg-transparent"
+              />
+            </div>
+
             <button
               onClick={() => onRemoveCompany(index)}
               className="bg-red-500 text-white rounded p-2 hover:bg-red-600"

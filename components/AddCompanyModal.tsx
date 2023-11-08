@@ -94,7 +94,7 @@ const AddCompanyModal = ({ onAddCompany }: CompaniesProps) => {
                 name="technologies"
                 placeholder="e.g. React, Node.js"
                 id="technologies"
-                value={toAddCompany.workedYears}
+                value={toAddCompany.technologies}
                 onChange={(event) =>
                   setToAddCompany((prev) => ({
                     ...prev,
